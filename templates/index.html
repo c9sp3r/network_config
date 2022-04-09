@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Data Interfaces</title>
+    <title>SPNetwork</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
@@ -12,7 +12,7 @@
     <!-- Favicon -->
     <link
       rel="shortcut icon"
-      href="{{ url_for('static', filename='img/favicon.ico') }}"
+      href="{{ url_for('static', filename='img/spn.png') }}"
     />
     <!-- Bootstrap 3.3.7 -->
     <link
@@ -28,7 +28,7 @@
     <div class="container-fluid bg-light">
       <div class="row">
         <div class="col-md-4">
-          <h1>Data Interfaces</h1>
+          <h1>SPNerwork</h1>
         </div>
         <div class="col-md-8">
           <form class="float-right" method="POST" action=" ">
@@ -69,6 +69,15 @@
                   required
                 />
               </div>
+              <div class="form-group col-md-3 my-2">
+                <input
+                  type="secret"
+                  class="form-control"
+                  placeholder="Secret"
+                  name="secret"
+                  required
+                />
+              </div>
               <div class="form-group col-md-2 my-2">
                 <button type="submit" class="btn btn-primary col">
                   Connect
@@ -86,6 +95,7 @@
           class="table table-responsive-sm table-bordered table-hover mt-5"
         >
           <thead class="thead-light">
+
             <tr>
               <th>Interface</th>
               <th>IP Address</th>
@@ -106,6 +116,79 @@
             {% endfor %}
           </tbody>
         </table>
+
+        <table
+          class="table table-responsive-sm table-bordered table-hover mt-5"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th><center>Routing Table</center></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{% for e in ip_route %}
+              {{ e }}<br>
+              {%endfor%}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table
+          class="table table-responsive-sm table-bordered table-hover mt-5"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th>Protocol</th>
+              <th>Address</th>
+              <th>Age(min)</th>
+              <th>Hardware Addr</th>
+              <th>Type</th>
+              <th>Interface</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for x in arp %}
+            <tr>
+              <td>{{ x['Protocol'] }}</td>
+              <td>{{ x['Address'] }}</td>
+              <td>{{ x['Age'] }}</td>
+              <td>{{ x['Hardware'] }}</td>
+              <td>{{ x['Type'] }}</td>
+              <td>{{ x['Interface'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+        <table
+          class="table table-responsive-sm table-bordered table-hover mt-5"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th colspan="2"><center>Prefix-list</center></th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td bgcolor="e9ecef"><center><b>Name</b></center></td>
+            <td bgcolor="e9ecef"><center><b>Prefix-list</b></center></td>
+        </tr>
+            {% for k,v in prefix.items() %}
+            <tr>
+              <td>{{k}}<br></td>
+              <td>{%for i in v%}{{i}}<br>{%endfor%} </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+
+
+
+
       </section>
     </div>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}"></script>
