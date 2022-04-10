@@ -1,7 +1,10 @@
 from netmiko import ConnectHandler
 from textfsm import TextFSM
 import os
-
+IP = "ip"
+IPV4="ipv4"
+IPV6 = "ipv6"
+PREFIXLIST = "prefix-list"
 
 def connect(device_type, ip, username, password, port, secret):
     device = {
@@ -70,13 +73,13 @@ def get_prefix_list(device):
     device.enable()
     output_prefix = device.send_command('show running-config | section prefix-list', delay_factor=2,cmd_verify=False)
     config_lines = output_prefix.splitlines()
-    print(config_lines)
+
     prefix_lists = {}
     for line in config_lines:
         line = line.strip()
         word_list = line.split()
         if word_list:
-            if (word_list[0] == "ip" or word_list[0] == "ipv6") and word_list[1] == "prefix-list":
+            if (word_list[0] == IP or word_list[0] == IPV6) and word_list[1] == PREFIXLIST:
                 if word_list[2] in prefix_lists.keys():
                     prefix_lists[word_list[2]].append(" ".join(word_list[3:]))
                 else:

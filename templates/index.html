@@ -175,14 +175,14 @@
           <tbody>
           <tr>
             <td bgcolor="e9ecef"><center><b>Name</b></center></td>
-            <td bgcolor="e9ecef"><center><b>Prefix-list</b></center></td>
-        </tr>
-            {% for k,v in prefix.items() %}
-            <tr>
-              <td>{{k}}<br></td>
-              <td>{%for i in v%}{{i}}<br>{%endfor%} </td>
-            </tr>
-            {%endfor%}
+            <td bgcolor="e9ecef"><center><b>Content</b></center></td>
+          </tr>
+          {% for k,v in prefix.items() %}
+          <td>{{k}} </td>
+          <td>{% for i in v%} {{i}}<br>{%endfor%}</td>
+          </tr>
+          {%endfor%}
+
           </tbody>
         </table>
 
