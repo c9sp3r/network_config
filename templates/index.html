@@ -91,6 +91,8 @@
 
     <div class="container">
       <section class="content">
+      <br>
+
         <table
           class="table table-responsive-sm table-bordered table-hover mt-5"
         >
@@ -185,6 +187,24 @@
 
           </tbody>
         </table>
+        <table
+          class="table table-responsive-sm table-bordered table-hover mt-5"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th><center>Vlan</center></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{% for i in vlan %}
+                    {{i}}<br>
+                    {% endfor %}</td>
+            </tr>
+          </tbody>
+        </table>
+
 
 
 

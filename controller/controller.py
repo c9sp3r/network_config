@@ -71,7 +71,7 @@ def get_arp(device):
 
 def get_prefix_list(device):
     device.enable()
-    output_prefix = device.send_command('show running-config | section prefix-list', delay_factor=2,cmd_verify=False)
+    output_prefix = device.send_command('show running-config | section prefix-list',read_timeout=20, delay_factor=2,cmd_verify=False)
     config_lines = output_prefix.splitlines()
 
     prefix_lists = {}
@@ -86,6 +86,18 @@ def get_prefix_list(device):
                     prefix_lists[word_list[2]] = [" ".join(word_list[3:])]
     print(prefix_lists)
     return prefix_lists
+
+
+def get_hostname(device):
+    output_hostname = device.send_command_timing('sh running-config | section hostname',read_timeout=25, delay_factor=2,cmd_verify=False)
+    return output_hostname
+
+
+def get_vlans(device):
+    output_vlan = device.send_command('sh vlan brief',read_timeout=40, delay_factor=2,cmd_verify=False)
+    output_vlan = output_vlan.splitlines()
+    print(output_vlan)
+    return output_vlan
 
 
 
