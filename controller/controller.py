@@ -1,6 +1,7 @@
 from netmiko import ConnectHandler
 from textfsm import TextFSM
 import os
+import app
 IP = "ip"
 IPV4="ipv4"
 IPV6 = "ipv6"
@@ -98,8 +99,6 @@ def get_vlans(device):
     output_vlan = output_vlan.splitlines()
     print(output_vlan)
     return output_vlan
-
-
 
 
 

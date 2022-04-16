@@ -1,7 +1,7 @@
 from flask import render_template, redirect, Flask, request, url_for
-from flask_wtf import form
-import json
 
+import json
+from controller.controller import *
 from controller.controller import get_arp, get_interfaces_list, get_ip_route, get_prefix_list, connect, get_hostname, get_vlans
 
 app = Flask(__name__)
@@ -35,21 +35,34 @@ def config():
             json.dump(result, outfile)
         return render_template('switch.html',vlan=get_vlans(device))
     else:
-        return render_template('switch.html')
+        with open('device.json', 'r') as openfile:
+            x = json.load(openfile)
+        device = connect('cisco_ios', x['hostname'], x['username'], x['password'], x['port'],
+                         x['secret'])
+
+        return render_template('switch.html',vlans=get_vlans(device))
 
 
 @app.route('/config2',methods=['POST', 'GET'])
 def config2():
 
     with open('device.json', 'r') as openfile:
-        result = json.load(openfile)
+        x = json.load(openfile)
+    device = connect('cisco_ios', x['hostname'], x['username'], x['password'], x['port'],
+                     x['secret'])
 
-    id=request.form.get('id')
+    id = request.form.get('id')
     name = request.form["name"]
     interface = request.form["interface"]
     mode = request.form["mode"]
     vlan = request.form["vlan"]
-    print(id,name,interface,mode,vlan)
+    command = "conf t" + "\n" + "vlan " + id + "\n" + "name " + name + "\n" + "interface " + interface + "\n" + "switchport mode " + mode + "\n" + "switchport acces vlan " + vlan+"\n"+"end"
+    device.enable()
+    print(command)
+
+    print (device.send_command_timing(command))
+
+
 
     return redirect(url_for('config'))
 
