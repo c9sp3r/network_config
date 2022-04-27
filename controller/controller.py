@@ -2,10 +2,12 @@ from netmiko import ConnectHandler
 from textfsm import TextFSM
 import os
 import app
+
 IP = "ip"
-IPV4="ipv4"
+IPV4 = "ipv4"
 IPV6 = "ipv6"
 PREFIXLIST = "prefix-list"
+
 
 def connect(device_type, ip, username, password, port, secret):
     device = {
@@ -14,6 +16,7 @@ def connect(device_type, ip, username, password, port, secret):
         'username': username,
         'password': password,
         'port': port,
+        'fast_cli' : False,
         'secret': secret,
     }
 
@@ -45,8 +48,8 @@ def get_ip_route(device):
     output_ip_route = device.send_command('show ip route')
     config_lines = output_ip_route.splitlines()
 
-
     return config_lines[10:]
+
 
 def get_arp(device):
     output_arp = device.send_command('show arp')
@@ -72,7 +75,8 @@ def get_arp(device):
 
 def get_prefix_list(device):
     device.enable()
-    output_prefix = device.send_command('show running-config | section prefix-list',read_timeout=20, delay_factor=2,cmd_verify=False)
+    output_prefix = device.send_command('show running-config | section prefix-list', read_timeout=20, delay_factor=2,
+                                        cmd_verify=False)
     config_lines = output_prefix.splitlines()
 
     prefix_lists = {}
@@ -90,16 +94,13 @@ def get_prefix_list(device):
 
 
 def get_hostname(device):
-    output_hostname = device.send_command_timing('sh running-config | section hostname',read_timeout=25, delay_factor=2,cmd_verify=False)
+    output_hostname = device.send_command_timing('sh running-config | section hostname', read_timeout=25,
+                                                 delay_factor=2, cmd_verify=False)
     return output_hostname
 
 
 def get_vlans(device):
-    output_vlan = device.send_command('sh vlan brief',read_timeout=40, delay_factor=2,cmd_verify=False)
+    output_vlan = device.send_command('sh vlan brief')
     output_vlan = output_vlan.splitlines()
     print(output_vlan)
     return output_vlan
-
-
-
-
