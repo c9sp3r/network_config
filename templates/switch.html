@@ -91,7 +91,6 @@
 
     <div class="container">
       <section class="content">
-      <br>
 
         <table
           class="table table-responsive-sm table-bordered table-hover mt-5"
@@ -99,113 +98,48 @@
           <thead class="thead-light">
 
             <tr>
-              <th>Interface</th>
-              <th>IP Address</th>
-              <th>MAC Address</th>
-              <th>MTU</th>
-              <th>Bandwith</th>
+              <th>vlan</th>
+              <th>name</th>
+              <th>status</th>
+              <th>ports</th>
+
             </tr>
           </thead>
           <tbody>
-            {% for x in result %}
+            {% for x in vlan %}
             <tr>
-              <td>{{ x['interface'] }}</td>
-              <td>{{ x['ip address'] }}</td>
-              <td>{{ x['mac address'] }}</td>
-              <td>{{ x['MTU'] }}</td>
-              <td>{{ x['bandwith'] }}</td>
+              <td>{{ x['vlan'] }}</td>
+              <td>{{ x['name'] }}</td>
+              <td>{{ x['status'] }}</td>
+             <td> {%for port in x['ports'] %}
+              {{ port }}<br>
+               {% endfor %}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
+        <h2>Add Vlan : </h2>
 
-        <table
-          class="table table-responsive-sm table-bordered table-hover mt-5"
-        >
-          <thead class="thead-light">
-            <tr>
-              <th><center>Routing Table</center></th>
+        <form class="float-left" method="POST" action="{{ url_for('config2') }}">
+            <input type="text" id="id" name="id" placeholder="id">
+            <input type="text" id="name" name="name" placeholder="name">
+            <input type="text" id="interface" name="interface" placeholder="interface">
+            <input type="text" id="mode" name="mode" placeholder="mode">
+            <input type="text" id="vlan" name="vlan" placeholder="vlan">
+        <div class="form-group col-md-2 my-2">
+        <input type = "submit" value = "Push" name = "submit" class="btn btn-primary col" >
+        </div>
+        </form>
+           <br><br><br><br>
+        <h2>Delete Vlan : </h2>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{% for e in ip_route %}
-              {{ e }}<br>
-              {%endfor%}</td>
-            </tr>
-          </tbody>
-        </table>
+        <form class="float-left" method="POST" action="{{ url_for('config3') }}">
+            <input type="text" id="del_id" name="del_id" placeholder="vlan a supprimer">
 
-        <table
-          class="table table-responsive-sm table-bordered table-hover mt-5"
-        >
-          <thead class="thead-light">
-            <tr>
-              <th>Protocol</th>
-              <th>Address</th>
-              <th>Age(min)</th>
-              <th>Hardware Addr</th>
-              <th>Type</th>
-              <th>Interface</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for x in arp %}
-            <tr>
-              <td>{{ x['Protocol'] }}</td>
-              <td>{{ x['Address'] }}</td>
-              <td>{{ x['Age'] }}</td>
-              <td>{{ x['Hardware'] }}</td>
-              <td>{{ x['Type'] }}</td>
-              <td>{{ x['Interface'] }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-
-
-        <table
-          class="table table-responsive-sm table-bordered table-hover mt-5"
-        >
-          <thead class="thead-light">
-            <tr>
-              <th colspan="2"><center>Prefix-list</center></th>
-
-            </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td bgcolor="e9ecef"><center><b>Name</b></center></td>
-            <td bgcolor="e9ecef"><center><b>Content</b></center></td>
-          </tr>
-          {% for k,v in prefix.items() %}
-          <td>{{k}} </td>
-          <td>{% for i in v%} {{i}}<br>{%endfor%}</td>
-          </tr>
-          {%endfor%}
-
-          </tbody>
-        </table>
-<!--         <table -->
-<!--           class="table table-responsive-sm table-bordered table-hover mt-5" -->
-<!--         > -->
-<!--           <thead class="thead-light"> -->
-<!--             <tr> -->
-<!--               <th><center>Vlan</center></th> -->
-
-<!--             </tr> -->
-<!--           </thead> -->
-<!--           <tbody> -->
-<!--             <tr> -->
-<!--               <td>{% for i in vlan %} -->
-<!--                     {{i}}<br> -->
-<!--                     {% endfor %}</td> -->
-<!--             </tr> -->
-<!--           </tbody> -->
-<!--         </table> -->
-
-
+        <div class="form-group col-md-auto my-2">
+        <input type = "submit" value = "Delete" name = "submit" class="btn btn-primary col" >
+        </div>
+        </form>
 
 
 

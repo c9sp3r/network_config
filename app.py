@@ -20,7 +20,7 @@ def index():
         device = connect('cisco_ios', result['hostname'], result['username'], result['password'], result['port'],
                          result['secret'])
         return render_template('index.html', result=get_interfaces_list(device), ip_route=get_ip_route(device),
-                               arp=get_arp(device), prefix=get_prefix_list(device), hostname=get_hostname(device),
+                               arp=get_arp(device), prefix=get_prefix_list(device),
                                vlan=get_vlans(device))
     else:
         return render_template('first_page.html')
@@ -42,7 +42,7 @@ def config():
             x = json.load(openfile)
         device = connect('cisco_ios', x['hostname'], x['username'], x['password'], x['port'],
                          x['secret'])
-        return render_template('switch.html', vlan=get_vlans(device))
+        return render_template('switch.html',vlan=get_vlans(device))
 
 
 @app.route('/config2', methods=['POST', 'GET'])
@@ -53,20 +53,21 @@ def config2():
                      x['secret'])
 
     id = request.form.get('id')
-    name = request.form["name"]
-    interface = request.form["interface"]
-    mode = request.form["mode"]
-    vlan = request.form["vlan"]
+    name = request.form.get('name')
+    interface = request.form.get('interface')
+    mode = request.form.get('mode')
+    vlan = request.form.get('vlan')
     # command = "conf t" + "\n" + "vlan " + id + "\n" + "name " + name + "\n" + "interface " + interface + "\n" + "switchport mode " + mode + "\n" + "switchport acces vlan " + vlan + "\n" + "end"
     device.enable()
     # print(command)
 
-    print(device.send_command_timing("conf t"))
-    print(device.send_command_timing("vlan "+id))
-    print(device.send_command_timing("name "+name))
-    print(device.send_command_timing("switchport mode "+mode))
-    print(device.send_command_timing("switchport access "+vlan))
-    print(device.send_command_timing("interface "+interface))
+    print(device.send_command_timing("conf t", delay_factor=2))
+    print(device.send_command_timing("vlan "+id, delay_factor=2))
+    print(device.send_command_timing("name "+name, delay_factor=2))
+    print(device.send_command_timing("interface " + interface, delay_factor=2))
+    print(device.send_command_timing("switchport mode "+mode, delay_factor=2))
+    print(device.send_command_timing("switchport access vlan "+vlan, delay_factor=2))
+
 
     return redirect(url_for('config'))
 

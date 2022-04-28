@@ -101,6 +101,18 @@ def get_hostname(device):
 
 def get_vlans(device):
     output_vlan = device.send_command('sh vlan brief')
-    output_vlan = output_vlan.splitlines()
-    print(output_vlan)
-    return output_vlan
+    # config_lines = output_vlan.splitlines()
+    current_dir = os.getcwd()
+    template_file = open(current_dir + "/controller/show_vlan.template", "r")
+    template = TextFSM(template_file)
+    parsed_interfaces = template.ParseText(output_vlan)
+    vlan_list = []
+    for vlan_data in parsed_interfaces:
+        vlanDict = {}
+        vlanDict["vlan"] = vlan_data[0]
+        vlanDict["name"] = vlan_data[1]
+        vlanDict["status"] = vlan_data[2]
+        vlanDict["ports"] = vlan_data[3]
+        vlan_list.append(vlanDict)
+    print(vlan_list)
+    return vlan_list
